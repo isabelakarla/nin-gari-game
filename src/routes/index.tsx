@@ -1,24 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
+import EcoGame from "@/components/EcoGame";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "EcoHerói — Jogo de plataforma sobre as ODS" },
+      { name: "description", content: "Jogo educativo retrô 2D: recolha lixo, plante mudas e aprenda sobre os Objetivos de Desenvolvimento Sustentável da ONU." },
+      { property: "og:title", content: "EcoHerói — Jogo de plataforma sobre as ODS" },
+      { property: "og:description", content: "Aventura pixel art sobre meio ambiente e as ODS 14, 7, 15 e 11." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen px-3 py-4 sm:px-6 sm:py-8">
+      <header className="mx-auto mb-4 flex max-w-5xl items-center gap-3">
+        <span className="logo-block" aria-hidden />
+        <div>
+          <h1 className="font-pixel text-sm sm:text-lg">EcoHerói</h1>
+          <p className="text-lg text-muted-foreground">Missões pelo planeta · ODS da ONU</p>
+        </div>
+      </header>
+      <EcoGame />
+      <p className="mx-auto mt-6 max-w-5xl text-center text-lg text-muted-foreground">
+        Feito para estudantes do Ensino Médio · Aprenda brincando sobre Vida na Água, Energia Limpa, Vida Terrestre e Cidades Sustentáveis.
+      </p>
+    </main>
   );
 }
