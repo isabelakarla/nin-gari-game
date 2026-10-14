@@ -71,7 +71,7 @@ function rng(seed: number) {
 }
 
 export function buildLevel(i: number): LevelData {
-  const theme = THEMES[i];
+  const theme = THEMES[i]!;
   const r = rng(1234 + i * 777);
   const others: ItemKind[] = (["bottle", "can", "bag"] as ItemKind[]).filter((k) => k !== theme.target);
   const platforms: LevelData["platforms"] = [];
@@ -95,9 +95,9 @@ export function buildLevel(i: number): LevelData {
         if (!specialPlaced && s >= 2) {
           items.push({ x: hx + 40, y: 168, kind: "special" });
           specialPlaced = true;
-        } else items.push({ x: hx + 40, y: 170, kind: others[Math.floor(r() * others.length)] });
+        } else items.push({ x: hx + 40, y: 170, kind: others[Math.floor(r() * others.length)]! });
       }
-      items.push({ x: x + 40 + Math.floor(r() * (w - 80)), y: GY - 28, kind: r() > 0.35 ? theme.target : others[Math.floor(r() * others.length)] });
+      items.push({ x: x + 40 + Math.floor(r() * (w - 80)), y: GY - 28, kind: r() > 0.35 ? theme.target : others[Math.floor(r() * others.length)]! });
       if (s < segs - 1 && w > 420) enemies.push({ x: x + w / 2, minX: x + 40, maxX: x + w - 70 });
       if (i >= 2 && s % 3 === 0 && w > 500) enemies.push({ x: x + 80, minX: x + 40, maxX: x + w / 2 });
     } else {

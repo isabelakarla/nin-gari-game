@@ -39,7 +39,7 @@ export class Game {
 
   load(i: number) {
     this.li = i;
-    this.theme = THEMES[i];
+    this.theme = THEMES[i]!;
     this.lvl = buildLevel(i);
     this.items = this.lvl.items.map((it) => ({ x: it.x, y: it.y, w: 18, h: 24, kind: it.kind, taken: false, phase: Math.random() * 6 }));
     this.enemies = this.lvl.enemies.map((e) => ({ x: e.x, y: GY - 22, w: 28, h: 22, vx: 50 + i * 12, minX: e.minX, maxX: e.maxX, alive: true, dead: 0 }));

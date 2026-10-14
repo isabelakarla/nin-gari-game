@@ -211,7 +211,7 @@ function drawMenuBg(c: CanvasRenderingContext2D, t: number) {
   for (let i = 0; i < 40; i++) {
     const x = (i * 97 + t * 20 * ((i % 3) + 1)) % VW;
     const y = (i * 53) % VH;
-    c.fillStyle = ["#0A97D9", "#FCC30B", "#56C02B", "#FD9D24"][i % 4];
+    c.fillStyle = ["#0A97D9", "#FCC30B", "#56C02B", "#FD9D24"][i % 4]!;
     c.fillRect(Math.round(x), y, 8, 8);
   }
   c.fillStyle = "rgba(0,0,0,0.35)"; c.fillRect(0, 0, VW, VH);
