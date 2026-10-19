@@ -13,6 +13,7 @@ export interface Stats { score: number; trash: number; seedlings: number; enemie
 export interface Callbacks {
   onHud: (h: Hud) => void;
   onFact: (f: Fact) => void;
+  onLevel?: (i: number) => void;
   onEnd: (s: Stats) => void;
 }
 
@@ -47,6 +48,7 @@ export class Game {
     this.safe = { x: 60, y: 300 };
     this.got = 0; this.portalOpen = false; this.camX = 0;
     this.emitHud();
+    this.cb.onLevel?.(i);
   }
 
   emitHud() {
@@ -195,6 +197,7 @@ export class Game {
       const hx = i * 160 - ((this.camX * 0.3) % 160);
       for (let s = 0; s < 8; s++) r(hx + s * 8, 300 - s * 10 - (i % 2) * 20, 160 - s * 16, 200, th.hill);
     }
+    if (th.deco !== "wind" && th.deco !== "forest" && th.deco !== "city") this.drawCastle(r);
     this.drawDeco(c, r);
 
     c.save();
@@ -211,6 +214,13 @@ export class Game {
       r(pl.x, pl.y, pl.w, 8, th.grass);
       for (let x = pl.x; x < pl.x + pl.w - 4; x += 8) r(x, pl.y + 8, 4, 4, th.grass);
       r(pl.x, pl.y, pl.w, 2, "rgba(255,255,255,0.35)");
+      if (th.deco === "wind" && !pl.ground && pl.w >= 60) {
+        const sx = pl.x + pl.w - 34;
+        r(sx + 12, pl.y - 10, 3, 10, "#888");
+        r(sx, pl.y - 22, 28, 12, "#1d3a8a");
+        for (let k = 0; k < 3; k++) r(sx + 2 + k * 9, pl.y - 20, 7, 8, "#4f7fe0");
+        r(sx, pl.y - 22, 28, 2, "#cfe0ff");
+      }
     }
     // portal
     const pt = this.lvl.portal;
@@ -310,5 +320,21 @@ export class Game {
         r(x + 120, 300, 6, 30, "#3a8a4a"); r(x + 112, 296, 22, 8, "#4fae5a");
       }
     }
+  }
+
+  private drawCastle(r: (x: number, y: number, w: number, h: number, c: string) => void) {
+    const x = 420 - ((this.camX * 0.08) % 1400);
+    const w = "#b9b3c9", d = "#8f88a3", roof = "#c0392b";
+    r(x, 200, 160, 120, w);
+    for (let k = 0; k < 8; k++) r(x + k * 20, 190, 12, 12, w);
+    for (const tx of [x - 30, x + 160]) {
+      r(tx, 150, 30, 170, d);
+      r(tx - 4, 138, 38, 14, roof); r(tx + 4, 124, 22, 14, roof); r(tx + 11, 112, 8, 12, roof);
+      r(tx + 11, 180, 8, 14, "#3a3350");
+    }
+    r(x + 60, 140, 40, 60, d); r(x + 56, 128, 48, 14, roof); r(x + 66, 114, 28, 14, roof);
+    r(x + 79, 96, 2, 20, "#555"); r(x + 81, 96, 14, 8, "#0A97D9");
+    r(x + 62, 260, 36, 60, "#3a3350"); r(x + 66, 264, 28, 4, "#5a5070");
+    for (const wx of [x + 20, x + 120]) r(wx, 230, 12, 16, "#3a3350");
   }
 }
