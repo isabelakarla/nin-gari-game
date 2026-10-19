@@ -4,9 +4,9 @@ import EcoGame from "@/components/EcoGame";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "EcoHerói — Jogo de plataforma sobre as ODS" },
-      { name: "description", content: "Jogo educativo retrô 2D: recolha lixo, plante mudas e aprenda sobre os Objetivos de Desenvolvimento Sustentável da ONU." },
-      { property: "og:title", content: "EcoHerói — Jogo de plataforma sobre as ODS" },
+      { title: "Ninja Catador — Jogo de plataforma sobre as ODS" },
+      { name: "description", content: "Jogo educativo retrô 2D: seja um ninja catador de lixo, recolha resíduos, plante mudas e aprenda sobre os Objetivos de Desenvolvimento Sustentável da ONU." },
+      { property: "og:title", content: "Ninja Catador — Jogo de plataforma sobre as ODS" },
       { property: "og:description", content: "Aventura pixel art sobre meio ambiente e as ODS 14, 7, 15 e 11." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -21,7 +21,7 @@ function Index() {
       <header className="mx-auto mb-4 flex max-w-5xl items-center gap-3">
         <span className="logo-block" aria-hidden />
         <div>
-          <h1 className="font-pixel text-sm sm:text-lg">EcoHerói</h1>
+          <h1 className="font-pixel text-sm sm:text-lg">Ninja Catador</h1>
           <p className="text-lg text-muted-foreground">Missões pelo planeta · ODS da ONU</p>
         </div>
       </header>
