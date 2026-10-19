@@ -15,8 +15,10 @@ export default function EcoGame() {
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(false);
   const [touch, setTouch] = useState(false);
+  const [story, setStory] = useState<number | null>(null);
+  const [ending, setEnding] = useState(false);
   const halted = useRef(false);
-  halted.current = paused || !!fact || screen !== "playing";
+  halted.current = paused || !!fact || story !== null || screen !== "playing";
 
   useEffect(() => { setTouch("ontouchstart" in window || navigator.maxTouchPoints > 0); }, []);
   useEffect(() => { audio.setMuted(muted); }, [muted]);
@@ -26,7 +28,8 @@ export default function EcoGame() {
     gameRef.current = new Game({
       onHud: setHud,
       onFact: (f) => setFact(f),
-      onEnd: (s) => { setStats(s); setTimeout(() => setScreen("end"), 600); },
+      onLevel: (i) => setStory(i),
+      onEnd: (s) => { setStats(s); setEnding(s.win); setTimeout(() => setScreen("end"), 600); },
     });
     setFact(null); setPaused(false); setStats(null); setScreen("playing");
   }, []);
@@ -65,7 +68,7 @@ export default function EcoGame() {
       const k = map[e.code];
       if (k) { e.preventDefault(); if (gameRef.current) gameRef.current.input[k] = v; }
       if (v && (e.code === "KeyP" || e.code === "Escape")) setPaused((p) => !p);
-      if (v && e.code === "Enter") setFact(null);
+      if (v && e.code === "Enter") { setFact((f) => { if (!f) setStory(null); return null; }); }
     };
     const down = (e: KeyboardEvent) => set(e, true);
     const up = (e: KeyboardEvent) => set(e, false);
@@ -91,7 +94,7 @@ export default function EcoGame() {
         <HudStat label="Lixo" value={hud?.trash ?? 0} />
         <HudStat label="Fase" value={hud ? `${hud.level}/${hud.totalLevels}` : `-/${THEMES.length}`} />
         {hud && (
-          <span className="ods-badge" style={{ backgroundColor: hud.color }}>ODS {hud.ods} · {hud.odsName}</span>
+          <span className="flex items-center gap-2"><OdsFlag ods={hud.ods} name={hud.odsName} color={hud.color} size="sm" /><span className="font-pixel hidden text-[9px] sm:inline">ODS {hud.ods} · {hud.odsName}</span></span>
         )}
         <div className="flex items-center gap-1" aria-label={`${hud?.lives ?? 3} vidas`}>
           {Array.from({ length: 3 }).map((_, i) => (
@@ -125,7 +128,7 @@ export default function EcoGame() {
             <p className="mt-2 text-center text-xl sm:text-2xl">{"Um ninja catador de lixo em missões pelos Objetivos de Desenvolvimento Sustentável\u00a0"}</p>
             <p className="mt-2 max-w-lg text-center text-lg opacity-90">Os Monstros da Poluição invadiram o mundo. Só Nin-Gari, o lendário reciclador, pode limpar as 4 regiões e salvar o planeta!</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {THEMES.map((t) => <span key={t.ods} className="ods-badge" style={{ backgroundColor: t.color }}>ODS {t.ods}</span>)}
+              {THEMES.map((t) => <OdsFlag key={t.ods} ods={t.ods} name={t.odsName} color={t.color} />)}
             </div>
             <button className="btn-pixel mt-6" onClick={start}>▶ JOGAR</button>
             <p className="mt-4 hidden text-center text-lg opacity-90 sm:block">
@@ -142,10 +145,26 @@ export default function EcoGame() {
           </div>
         )}
 
+        {story !== null && screen === "playing" && !fact && THEMES[story] && (
+          <div className="overlay">
+            <div className="fact-card max-h-full max-w-lg overflow-auto p-4 sm:p-6" style={{ borderColor: THEMES[story]!.color }}>
+              <div className="flex items-center gap-3">
+                <OdsFlag ods={THEMES[story]!.ods} name={THEMES[story]!.odsName} color={THEMES[story]!.color} />
+                <div>
+                  <div className="font-pixel text-[10px] text-muted-foreground">CAPÍTULO {story + 1}</div>
+                  <h3 className="font-pixel mt-1 text-xs leading-relaxed sm:text-sm">{THEMES[story]!.name}</h3>
+                </div>
+              </div>
+              <p className="mt-3 text-xl leading-snug sm:text-2xl">{THEMES[story]!.story}</p>
+              <button className="btn-pixel mt-4 w-full" onClick={() => setStory(null)} autoFocus>COMEÇAR ➜</button>
+            </div>
+          </div>
+        )}
+
         {fact && (
           <div className="overlay">
             <div className="fact-card max-w-md p-4 sm:p-6" style={{ borderColor: fact.color }}>
-              <span className="ods-badge" style={{ backgroundColor: fact.color }}>ODS {fact.ods} · {fact.odsName}</span>
+              <div className="flex items-center gap-3"><OdsFlag ods={fact.ods} name={fact.odsName} color={fact.color} /><span className="font-pixel text-[10px] leading-relaxed">ODS {fact.ods} · {fact.odsName}</span></div>
               <h3 className="font-pixel mt-3 text-xs leading-relaxed sm:text-sm">{fact.title}</h3>
               <p className="mt-3 text-xl leading-snug sm:text-2xl">{fact.text}</p>
               <p className="mt-3 text-lg leading-snug text-accent">💡 Dica: {fact.tip}</p>
@@ -164,6 +183,7 @@ export default function EcoGame() {
                 <EndStat label="Mudas plantadas" v={stats.seedlings} />
                 <EndStat label="Poluidores vencidos" v={stats.enemies} />
               </div>
+              {ending && <p className="mt-4 text-lg leading-snug opacity-90">As 4 regiões estão livres! Os Monstros da Poluição fugiram, o rio voltou a correr limpo, o vento e o sol movem o vale, a floresta cresce de novo e a cidade respira. Mas o mestre lembra: a lenda continua com cada pessoa que cuida do planeta.</p>}
               <p className="mt-4 text-xl leading-snug">
                 {stats.win
                   ? "Você mostrou que pequenas atitudes mudam o mundo. Separe o lixo, economize energia e cuide da natureza também na vida real!"
@@ -185,6 +205,21 @@ export default function EcoGame() {
         </div>
       )}
     </div>
+  );
+}
+
+function OdsFlag({ ods, name, color, size = "md" }: { ods: number; name: string; color: string; size?: "sm" | "md" }) {
+  const big = size === "md";
+  return (
+    <span
+      title={`ODS ${ods} · ${name}`}
+      className={`ods-flag inline-flex shrink-0 flex-col justify-between border-2 border-foreground/80 p-1 text-primary-foreground ${big ? "h-14 w-14" : "h-8 w-8"}`}
+      style={{ backgroundColor: color }}
+    >
+      <span className="font-pixel leading-none" style={{ fontSize: big ? 7 : 5 }}>ODS</span>
+      <span className="font-pixel leading-none" style={{ fontSize: big ? 18 : 11 }}>{ods}</span>
+      {big && <span className="truncate leading-none" style={{ fontSize: 9 }}>{name}</span>}
+    </span>
   );
 }
 
