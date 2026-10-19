@@ -21,7 +21,7 @@ function Index() {
       <header className="mx-auto mb-4 flex max-w-5xl items-center gap-3">
         <span className="logo-block" aria-hidden />
         <div>
-          <h1 className="font-pixel text-sm sm:text-lg">Ninja Catador</h1>
+          <h1 className="font-pixel text-sm sm:text-lg">Nin-Gari: A Lenda do Reciclador</h1>
           <p className="text-lg text-muted-foreground">Missões pelo planeta · ODS da ONU</p>
         </div>
       </header>
