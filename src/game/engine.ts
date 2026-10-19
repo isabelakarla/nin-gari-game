@@ -243,19 +243,31 @@ export class Game {
       r(e.x + 9 + ex, e.y + 10 + b, 2, 2, "#d22"); r(e.x + 18 + ex, e.y + 10 + b, 2, 2, "#d22");
       r(e.x + 8 + ex, e.y + 6 + b, 12, 2, "#222");
     }
-    // player
+    // player — ninja catador de lixo
     const p = this.p;
     if (!(p.inv > 0 && Math.floor(this.t * 16) % 2)) {
       const x = Math.round(p.x), y = Math.round(p.y), f = p.face;
       const leg = p.onGround ? Math.floor(p.anim) % 2 : 1;
-      r(x + 4, y + 24, 6, 6 - (leg ? 2 : 0), "#2b4aa0"); r(x + 12, y + 24, 6, 6 - (leg ? 0 : 2), "#2b4aa0");
-      r(x + 3, y + 13, 16, 12, "#ff8a3d"); r(x + 3, y + 13, 16, 3, "#ffb36b");
-      r(x + 9, y + 16, 4, 4, "#56C02B");
-      r(x + (f > 0 ? 17 : 0), y + 15, 5, 7, "#f2c39b");
-      r(x + 4, y + 2, 14, 12, "#f2c39b");
-      r(x + 2, y, 18, 5, "#2e9e3e"); r(x + (f > 0 ? 14 : -2), y + 3, 10, 3, "#2e9e3e");
-      r(x + (f > 0 ? 13 : 6), y + 7, 3, 3, "#222");
-      r(x + (f > 0 ? 11 : 8), y + 11, 4, 1, "#a0522d");
+      const bk = f > 0 ? 0 : 14; // lado de trás (saco e rabo da faixa)
+      // saco de coleta nas costas
+      r(x + bk, y + 13, 8, 10, "#8a5a2e"); r(x + bk + 1, y + 11, 6, 3, "#6e4424"); r(x + bk + 2, y + 15, 4, 4, "#a06a38");
+      // pernas (calça escura)
+      r(x + 5, y + 23, 5, 7 - (leg ? 2 : 0), "#4a4a55"); r(x + 12, y + 23, 5, 7 - (leg ? 0 : 2), "#4a4a55");
+      r(x + 5, y + 28 - (leg ? 2 : 0), 5, 2, "#2a2a33"); r(x + 12, y + 28 - (leg ? 0 : 2), 5, 2, "#2a2a33");
+      // traje ninja verde
+      r(x + 4, y + 13, 14, 10, "#2e7d32"); r(x + 4, y + 13, 14, 3, "#56C02B");
+      r(x + 4, y + 20, 14, 3, "#22252d"); // cinto
+      r(x + (f > 0 ? 16 : 1), y + 15, 5, 6, "#2e7d32"); // braço
+      // cabeça
+      r(x + 4, y + 4, 14, 9, "#f2c39b");
+      r(x + 4, y + 9, 14, 4, "#22252d"); // máscara
+      r(x + (f > 0 ? 13 : 6), y + 7, 3, 3, "#222"); // olho
+      // faixa verde com rabo ao vento
+      r(x + 3, y + 4, 16, 3, "#2e9e3e");
+      r(x + (f > 0 ? -1 : 19), y + 5, 4, 2, "#2e9e3e"); r(x + (f > 0 ? -1 : 19), y + 8, 3, 2, "#2e9e3e");
+      // cabelo espetado
+      r(x + 5, y, 4, 4, "#1a1a1a"); r(x + 10, y, 4, 4, "#1a1a1a"); r(x + 15, y, 3, 4, "#1a1a1a");
+      r(x + 7, y + 1, 3, 2, "#6b4a2a"); r(x + 14, y + 1, 2, 2, "#6b4a2a");
     }
     for (const q of this.parts) { c.globalAlpha = Math.max(0, q.life / 0.6); r(q.x, q.y, 4, 4, q.c); }
     c.globalAlpha = 1;
