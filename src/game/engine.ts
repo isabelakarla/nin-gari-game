@@ -8,7 +8,7 @@ export interface Hud {
   score: number; trash: number; lives: number; level: number; totalLevels: number;
   ods: number; odsName: string; color: string; mission: string; got: number; need: number; targetLabel: string; portalOpen: boolean;
 }
-export interface Fact { ods: number; odsName: string; title: string; text: string; color: string }
+export interface Fact { ods: number; odsName: string; title: string; text: string; tip: string; color: string }
 export interface Stats { score: number; trash: number; seedlings: number; enemies: number; level: number; win: boolean }
 export interface Callbacks {
   onHud: (h: Hud) => void;
@@ -140,7 +140,7 @@ export class Game {
         this.score += 100;
         audio.play("special");
         this.burst(it.x + 9, it.y + 12, "#ffd700", 24);
-        this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Item especial!", text: this.theme.specialFact, color: this.theme.color });
+        this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Você Sabia?", text: this.theme.specialFact, tip: this.theme.tip, color: this.theme.color });
       } else {
         this.score += it.kind === this.theme.target ? 20 : 10;
         if (it.kind === "seedling") this.seedlings++; else this.trash++;
@@ -152,7 +152,7 @@ export class Game {
             this.portalOpen = true;
             this.score += 200;
             setTimeout(() => audio.play("unlock"), 250);
-            this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Missão cumprida! Portal aberto", text: this.theme.missionFact, color: this.theme.color });
+            this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Missão cumprida! Você Sabia?", text: this.theme.missionFact, tip: this.theme.tip, color: this.theme.color });
           }
         }
       }
