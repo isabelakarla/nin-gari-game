@@ -8,7 +8,7 @@ export interface Hud {
   score: number; trash: number; lives: number; level: number; totalLevels: number;
   ods: number; odsName: string; color: string; mission: string; got: number; need: number; targetLabel: string; portalOpen: boolean;
 }
-export interface Fact { ods: number; odsName: string; title: string; text: string; color: string }
+export interface Fact { ods: number; odsName: string; title: string; text: string; tip: string; color: string }
 export interface Stats { score: number; trash: number; seedlings: number; enemies: number; level: number; win: boolean }
 export interface Callbacks {
   onHud: (h: Hud) => void;
@@ -140,7 +140,7 @@ export class Game {
         this.score += 100;
         audio.play("special");
         this.burst(it.x + 9, it.y + 12, "#ffd700", 24);
-        this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Item especial!", text: this.theme.specialFact, color: this.theme.color });
+        this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Você Sabia?", text: this.theme.specialFact, tip: this.theme.tip, color: this.theme.color });
       } else {
         this.score += it.kind === this.theme.target ? 20 : 10;
         if (it.kind === "seedling") this.seedlings++; else this.trash++;
@@ -152,7 +152,7 @@ export class Game {
             this.portalOpen = true;
             this.score += 200;
             setTimeout(() => audio.play("unlock"), 250);
-            this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Missão cumprida! Portal aberto", text: this.theme.missionFact, color: this.theme.color });
+            this.cb.onFact({ ods: this.theme.ods, odsName: this.theme.odsName, title: "Missão cumprida! Você Sabia?", text: this.theme.missionFact, tip: this.theme.tip, color: this.theme.color });
           }
         }
       }
@@ -250,7 +250,9 @@ export class Game {
       const leg = p.onGround ? Math.floor(p.anim) % 2 : 1;
       const bk = f > 0 ? 0 : 14; // lado de trás (saco e rabo da faixa)
       // saco de coleta nas costas
-      r(x + bk, y + 13, 8, 10, "#8a5a2e"); r(x + bk + 1, y + 11, 6, 3, "#6e4424"); r(x + bk + 2, y + 15, 4, 4, "#a06a38");
+      r(x + bk - 1, y + 12, 10, 12, "#1b5e20"); r(x + bk + 1, y + 10, 6, 3, "#14451a");
+      // símbolo de reciclagem (triângulo branco)
+      r(x + bk + 3, y + 15, 2, 1, "#ffffff"); r(x + bk + 2, y + 16, 1, 2, "#ffffff"); r(x + bk + 5, y + 16, 1, 2, "#ffffff"); r(x + bk + 1, y + 18, 6, 1, "#ffffff");
       // pernas (calça escura)
       r(x + 5, y + 23, 5, 7 - (leg ? 2 : 0), "#4a4a55"); r(x + 12, y + 23, 5, 7 - (leg ? 0 : 2), "#4a4a55");
       r(x + 5, y + 28 - (leg ? 2 : 0), 5, 2, "#2a2a33"); r(x + 12, y + 28 - (leg ? 0 : 2), 5, 2, "#2a2a33");

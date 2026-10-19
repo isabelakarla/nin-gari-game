@@ -111,7 +111,7 @@ export default function EcoGame() {
       {hud && screen === "playing" && (
         <div className="mission-bar mb-3 flex items-center gap-3 px-3 py-2 text-lg">
           <span className="font-pixel text-[10px] text-primary">MISSÃO</span>
-          <span className="flex-1 leading-tight">{hud.portalOpen ? "Portal aberto! Vá até o final da fase ➜" : hud.mission}</span>
+          <span className="flex-1 leading-tight">{hud.portalOpen ? "Portal aberto! Vá até o final da fase ➜" : `${hud.mission} · Cuidado: ${THEMES[hud.level - 1]?.enemyName ?? ""}`}</span>
           <span className="font-pixel text-xs">{Math.min(hud.got, hud.need)}/{hud.need}</span>
         </div>
       )}
@@ -123,6 +123,7 @@ export default function EcoGame() {
           <div className="overlay">
             <h1 className="font-pixel text-center text-xl leading-relaxed text-primary-foreground sm:text-3xl">Nin-Gari:<span className="text-accent">{"\n"}A Lenda do Reciclador</span></h1>
             <p className="mt-2 text-center text-xl sm:text-2xl">{"Um ninja catador de lixo em missões pelos Objetivos de Desenvolvimento Sustentável\u00a0"}</p>
+            <p className="mt-2 max-w-lg text-center text-lg opacity-90">Os Monstros da Poluição invadiram o mundo. Só Nin-Gari, o lendário reciclador, pode limpar as 4 regiões e salvar o planeta!</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {THEMES.map((t) => <span key={t.ods} className="ods-badge" style={{ backgroundColor: t.color }}>ODS {t.ods}</span>)}
             </div>
@@ -147,6 +148,7 @@ export default function EcoGame() {
               <span className="ods-badge" style={{ backgroundColor: fact.color }}>ODS {fact.ods} · {fact.odsName}</span>
               <h3 className="font-pixel mt-3 text-xs leading-relaxed sm:text-sm">{fact.title}</h3>
               <p className="mt-3 text-xl leading-snug sm:text-2xl">{fact.text}</p>
+              <p className="mt-3 text-lg leading-snug text-accent">💡 Dica: {fact.tip}</p>
               <button className="btn-pixel mt-4 w-full" onClick={() => setFact(null)} autoFocus>CONTINUAR ➜</button>
             </div>
           </div>
