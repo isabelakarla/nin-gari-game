@@ -250,7 +250,9 @@ export class Game {
       const leg = p.onGround ? Math.floor(p.anim) % 2 : 1;
       const bk = f > 0 ? 0 : 14; // lado de trás (saco e rabo da faixa)
       // saco de coleta nas costas
-      r(x + bk, y + 13, 8, 10, "#8a5a2e"); r(x + bk + 1, y + 11, 6, 3, "#6e4424"); r(x + bk + 2, y + 15, 4, 4, "#a06a38");
+      r(x + bk - 1, y + 12, 10, 12, "#1b5e20"); r(x + bk + 1, y + 10, 6, 3, "#14451a");
+      // símbolo de reciclagem (triângulo branco)
+      r(x + bk + 3, y + 15, 2, 1, "#ffffff"); r(x + bk + 2, y + 16, 1, 2, "#ffffff"); r(x + bk + 5, y + 16, 1, 2, "#ffffff"); r(x + bk + 1, y + 18, 6, 1, "#ffffff");
       // pernas (calça escura)
       r(x + 5, y + 23, 5, 7 - (leg ? 2 : 0), "#4a4a55"); r(x + 12, y + 23, 5, 7 - (leg ? 0 : 2), "#4a4a55");
       r(x + 5, y + 28 - (leg ? 2 : 0), 5, 2, "#2a2a33"); r(x + 12, y + 28 - (leg ? 0 : 2), 5, 2, "#2a2a33");
