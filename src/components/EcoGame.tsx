@@ -121,8 +121,8 @@ export default function EcoGame() {
 
         {screen === "menu" && (
           <div className="overlay">
-            <h1 className="font-pixel text-center text-xl leading-relaxed text-primary-foreground sm:text-3xl">Nin-Gari:<span className="text-accent">A</span></h1>
-            <p className="mt-2 text-center text-xl sm:text-2xl">Um ninja catador de lixo em missões pelos Objetivos de Desenvolvimento Sustentável</p>
+            <h1 className="font-pixel text-center text-xl leading-relaxed text-primary-foreground sm:text-3xl">Nin-Gari:<span className="text-accent">{"\n"}A Lenda do Reciclador</span></h1>
+            <p className="mt-2 text-center text-xl sm:text-2xl">{"Um ninja catador de lixo em missões pelos Objetivos de Desenvolvimento Sustentável\u00a0"}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {THEMES.map((t) => <span key={t.ods} className="ods-badge" style={{ backgroundColor: t.color }}>ODS {t.ods}</span>)}
             </div>
