@@ -20,6 +20,7 @@ export interface Theme {
   specialFact: string;
   tip: string;
   enemyName: string;
+  story: string;
 }
 
 export const THEMES: Theme[] = [
@@ -29,7 +30,7 @@ export const THEMES: Theme[] = [
     color: "#0A97D9", sky: ["#5ec8f2", "#d9f3ff"], hazard: "#3f7a6a", dirt: "#8b5a2b", grass: "#3fbf4f", hill: "#7cc8a8", deco: "river",
     missionFact: "Cerca de 11 milhões de toneladas de plástico chegam aos oceanos todo ano. Uma garrafa plástica pode levar até 450 anos para se decompor!",
     specialFact: "Os oceanos produzem mais da metade do oxigênio que respiramos, graças ao fitoplâncton. Protegê-los é proteger a vida!",
-    tip: "Reduza o uso de descartáveis e leve sua garrafinha reutilizável.", enemyName: "Sufocador de Plástico",
+    tip: "Reduza o uso de descartáveis e leve sua garrafinha reutilizável.", enemyName: "Sufocador de Plástico", story: "O velho mestre do templo contou a Nin-Gari que o Rio Limpo, que abastecia o castelo do reino, foi tomado por garrafas plásticas. Os peixes sumiram e o Sufocador de Plástico cresce a cada lixo jogado na água. Recolha as garrafas e devolva a vida ao rio!",
   },
   {
     ods: 7, odsName: "Energia Limpa", title: "Vale dos Ventos",
@@ -37,7 +38,7 @@ export const THEMES: Theme[] = [
     color: "#FCC30B", sky: ["#ffd76a", "#fff6d8"], hazard: "#5a4a3a", dirt: "#9a6a3a", grass: "#8cc63f", hill: "#c8d96a", deco: "wind",
     missionFact: "Reciclar uma latinha de alumínio economiza energia suficiente para manter uma TV ligada por 3 horas. O Brasil recicla quase 100% das latinhas!",
     specialFact: "Energia solar e eólica já são as fontes de eletricidade mais baratas em grande parte do mundo. O sol entrega à Terra em 1 hora a energia que a humanidade usa em 1 ano!",
-    tip: "Desligue aparelhos da tomada e separe as latinhas para reciclagem.", enemyName: "Nuvem de Fuligem",
+    tip: "Desligue aparelhos da tomada e separe as latinhas para reciclagem.", enemyName: "Nuvem de Fuligem", story: "Com o rio limpo, Nin-Gari chega ao Vale dos Ventos. As turbinas pararam e os painéis solares estão cobertos de fuligem: a Nuvem de Fuligem quer que o vale volte a queimar carvão. Recicle as latinhas e faça a energia limpa girar outra vez!",
   },
   {
     ods: 15, odsName: "Vida Terrestre", title: "Floresta Viva",
@@ -45,7 +46,7 @@ export const THEMES: Theme[] = [
     color: "#56C02B", sky: ["#8fd9a8", "#e8fbe9"], hazard: "#6b3b2a", dirt: "#6e4424", grass: "#2e9e3e", hill: "#4fae6a", deco: "forest",
     missionFact: "Uma única árvore adulta pode absorver cerca de 22 kg de CO₂ por ano. Florestas abrigam 80% das espécies terrestres do planeta!",
     specialFact: "A Mata Atlântica já perdeu cerca de 88% da sua área original. Projetos de reflorestamento ajudam a reconectar habitats de animais.",
-    tip: "Plante uma árvore e prefira produtos com certificação florestal.", enemyName: "Toxina de Solo",
+    tip: "Plante uma árvore e prefira produtos com certificação florestal.", enemyName: "Toxina de Solo", story: "A Floresta Viva está ficando cinza. A Toxina de Solo envenenou a terra e as árvores começaram a cair. Os animais pediram ajuda ao ninja: plante as mudas para que a mata volte a crescer!",
   },
   {
     ods: 11, odsName: "Cidades Sustentáveis", title: "Cidade Verde",
@@ -53,7 +54,7 @@ export const THEMES: Theme[] = [
     color: "#FD9D24", sky: ["#ffb877", "#ffeedd"], hazard: "#55505a", dirt: "#6a6a72", grass: "#5cb85c", hill: "#b3a3c3", deco: "city",
     missionFact: "Mais da metade da população mundial vive em cidades. Coleta seletiva, transporte público e áreas verdes tornam as cidades mais saudáveis!",
     specialFact: "Telhados verdes reduzem a temperatura dos prédios, retêm água da chuva e criam abrigo para abelhas e pássaros no meio da cidade.",
-    tip: "Use sacolas retornáveis e participe da coleta seletiva do seu bairro.", enemyName: "Sombra de Esgoto",
+    tip: "Use sacolas retornáveis e participe da coleta seletiva do seu bairro.", enemyName: "Sombra de Esgoto", story: "A última batalha! A Sombra de Esgoto domina a Cidade Verde, entupindo bueiros com sacolas plásticas. Os moradores se escondem em casa. Recolha as sacolas, mostre o poder da coleta seletiva e liberte a cidade!",
   },
 ];
 
