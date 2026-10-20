@@ -27,6 +27,7 @@ const overlap = (a: Rect, b: Rect) => a.x < b.x + b.w && a.x + a.w > b.x && a.y 
 export class Game {
   input = { left: false, right: false, jump: false, throw: false };
   boss: BossBattle | null = null;
+  throwQueued = false;
   li = 0;
   theme: Theme;
   lvl: LevelData;
@@ -55,7 +56,7 @@ export class Game {
     Object.assign(this.p, { x: 60, y: 300, vx: 0, vy: 0, jumps: 0, inv: 1 });
     this.safe = { x: 60, y: 300 };
     this.got = 0; this.portalOpen = false; this.camX = 0;
-    this.parts = []; this.jumpHeld = false;
+    this.parts = []; this.jumpHeld = false; this.throwQueued = false;
     Object.assign(this.input, { left: false, right: false, jump: false, throw: false });
     this.boss = theme.deco === "factory" ? new BossBattle({
       hurt: () => this.hurt(),
@@ -181,7 +182,8 @@ export class Game {
       }
     }
 
-    if (this.boss) this.boss.update(dt, p, this.input.throw);
+    if (this.boss) this.boss.update(dt, p, this.input.throw || this.throwQueued);
+    this.throwQueued = false;
     const portal = { x: this.lvl.portal.x, y: this.lvl.portal.y, w: 44, h: 72 };
     if (this.portalOpen && overlap(p, portal)) {
       this.score += this.lives * 50;
@@ -206,6 +208,7 @@ export class Game {
     g.addColorStop(0, th.sky[0]); g.addColorStop(1, th.sky[1]);
     c.fillStyle = g; c.fillRect(0, 0, VW, VH);
 
+    if (th.deco !== "factory") {
     // sun
     r(640, 50, 48, 48, "#fff3a0"); r(632, 58, 64, 32, "#fff3a0"); r(648, 42, 32, 64, "#fff3a0");
     // clouds
@@ -218,6 +221,7 @@ export class Game {
     for (let i = -1; i < 8; i++) {
       const hx = i * 160 - ((this.camX * 0.3) % 160);
       for (let s = 0; s < 8; s++) r(hx + s * 8, 300 - s * 10 - (i % 2) * 20, 160 - s * 16, 200, th.hill);
+    }
     }
     if (th.deco === "river") this.drawCastle(r);
     this.drawDeco(c, r);

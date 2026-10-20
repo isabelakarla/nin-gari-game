@@ -72,7 +72,7 @@ export default function EcoGame() {
     };
     const set = (e: KeyboardEvent, v: boolean) => {
       const k = map[e.code];
-      if (k) { e.preventDefault(); if (gameRef.current) gameRef.current.input[k] = v; }
+      if (k) { e.preventDefault(); if (gameRef.current) { gameRef.current.input[k] = v; if (k === "throw" && v && !e.repeat) gameRef.current.throwQueued = true; } }
       if (v && (e.code === "KeyP" || e.code === "Escape")) setPaused((p) => !p);
       if (v && e.code === "Enter") { setFact((f) => { if (!f) setStory(null); return null; }); }
     };
@@ -83,7 +83,7 @@ export default function EcoGame() {
     return () => { window.removeEventListener("keydown", down); window.removeEventListener("keyup", up); };
   }, []);
 
-  const press = (k: "left" | "right" | "jump" | "throw", v: boolean) => { if (gameRef.current) gameRef.current.input[k] = v; };
+  const press = (k: "left" | "right" | "jump" | "throw", v: boolean) => { if (gameRef.current) { gameRef.current.input[k] = v; if (k === "throw" && v) gameRef.current.throwQueued = true; } };
   const tb = (k: "left" | "right" | "jump" | "throw") => ({
     onPointerDown: (e: React.PointerEvent) => { e.preventDefault(); audio.unlock(); press(k, true); },
     onPointerUp: () => press(k, false),
