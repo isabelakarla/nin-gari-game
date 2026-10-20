@@ -1,4 +1,5 @@
 import { audio } from "./audio";
+import { BossBattle } from "./boss";
 import { buildLevel, GY, THEMES, type ItemKind, type LevelData, type Rect, type Theme } from "./levels";
 
 export const VW = 800;
@@ -6,7 +7,7 @@ export const VH = 450;
 
 export interface Hud {
   score: number; trash: number; lives: number; level: number; totalLevels: number;
-  ods: number; odsName: string; color: string; mission: string; got: number; need: number; targetLabel: string; portalOpen: boolean;
+  ods: number; odsName: string; color: string; mission: string; got: number; need: number; targetLabel: string; portalOpen: boolean; bossHealth: number | null; bombs: number;
 }
 export interface Fact { ods: number; odsName: string; title: string; text: string; tip: string; color: string }
 export interface Stats { score: number; trash: number; seedlings: number; enemies: number; level: number; win: boolean }
@@ -24,10 +25,11 @@ interface Particle { x: number; y: number; vx: number; vy: number; life: number;
 const overlap = (a: Rect, b: Rect) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
 export class Game {
-  input = { left: false, right: false, jump: false };
+  input = { left: false, right: false, jump: false, throw: false };
+  boss: BossBattle | null = null;
   li = 0;
-  theme!: Theme;
-  lvl!: LevelData;
+  theme: Theme;
+  lvl: LevelData;
   p = { x: 60, y: 300, w: 22, h: 30, vx: 0, vy: 0, onGround: false, jumps: 0, face: 1, inv: 0, anim: 0 };
   items: Item[] = [];
   enemies: Enemy[] = [];
@@ -36,17 +38,35 @@ export class Game {
   camX = 0; t = 0; portalOpen = false; jumpHeld = false; safe = { x: 60, y: 300 }; over = false;
   private lastHud = "";
 
-  constructor(private cb: Callbacks) { this.load(0); }
+  constructor(private cb: Callbacks) {
+    const first = THEMES[0];
+    if (!first) throw new Error("Nenhuma fase disponível");
+    this.theme = first; this.lvl = buildLevel(0); this.load(0);
+  }
 
   load(i: number) {
     this.li = i;
-    this.theme = THEMES[i]!;
+    const theme = THEMES[i];
+    if (!theme) throw new RangeError("Fase inválida");
+    this.theme = theme;
     this.lvl = buildLevel(i);
     this.items = this.lvl.items.map((it) => ({ x: it.x, y: it.y, w: 18, h: 24, kind: it.kind, taken: false, phase: Math.random() * 6 }));
     this.enemies = this.lvl.enemies.map((e) => ({ x: e.x, y: GY - 22, w: 28, h: 22, vx: 50 + i * 12, minX: e.minX, maxX: e.maxX, alive: true, dead: 0 }));
     Object.assign(this.p, { x: 60, y: 300, vx: 0, vy: 0, jumps: 0, inv: 1 });
     this.safe = { x: 60, y: 300 };
     this.got = 0; this.portalOpen = false; this.camX = 0;
+    this.parts = []; this.jumpHeld = false;
+    Object.assign(this.input, { left: false, right: false, jump: false, throw: false });
+    this.boss = theme.deco === "factory" ? new BossBattle({
+      hurt: () => this.hurt(),
+      collect: () => { this.score += 20; this.trash++; audio.play("collect"); },
+      stomp: () => { this.score += 50; this.kills++; audio.play("stomp"); },
+      hit: (hits) => {
+        this.got = hits; this.score += 100; audio.play("stomp"); this.burst(400, 300, theme.color, 24);
+        if (hits === 5 || hits === 10) this.cb.onFact({ ods: 13, odsName: theme.odsName, title: hits === 5 ? "Você Sabia?" : "Barril purificado! Você Sabia?", text: hits === 5 ? theme.specialFact : theme.missionFact, tip: theme.tip, color: theme.color });
+      },
+      win: () => { if (!this.over) { this.score += this.lives * 50; this.kills++; this.end(true); } },
+    }) : null;
     this.emitHud();
     this.cb.onLevel?.(i);
   }
@@ -56,6 +76,7 @@ export class Game {
       score: this.score, trash: this.trash, lives: this.lives, level: this.li + 1, totalLevels: THEMES.length,
       ods: this.theme.ods, odsName: this.theme.odsName, color: this.theme.color, mission: this.theme.mission,
       got: this.got, need: this.theme.targetCount, targetLabel: this.theme.targetLabel, portalOpen: this.portalOpen,
+      bossHealth: this.boss?.health ?? null, bombs: this.boss?.bombs ?? 0,
     };
     const k = JSON.stringify(h);
     if (k !== this.lastHud) { this.lastHud = k; this.cb.onHud(h); }
@@ -160,6 +181,7 @@ export class Game {
       }
     }
 
+    if (this.boss) this.boss.update(dt, p, this.input.throw);
     const portal = { x: this.lvl.portal.x, y: this.lvl.portal.y, w: 44, h: 72 };
     if (this.portalOpen && overlap(p, portal)) {
       this.score += this.lives * 50;
@@ -171,7 +193,7 @@ export class Game {
     for (const pt of this.parts) { pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.vy += 900 * dt; pt.life -= dt; }
     this.parts = this.parts.filter((pt) => pt.life > 0);
 
-    const tx = p.x - VW * 0.4;
+    const tx = this.boss ? 0 : p.x - VW * 0.4;
     this.camX += (Math.max(0, Math.min(this.lvl.width - VW, tx)) - this.camX) * Math.min(1, dt * 8);
     this.emitHud();
   }
@@ -197,7 +219,7 @@ export class Game {
       const hx = i * 160 - ((this.camX * 0.3) % 160);
       for (let s = 0; s < 8; s++) r(hx + s * 8, 300 - s * 10 - (i % 2) * 20, 160 - s * 16, 200, th.hill);
     }
-    if (th.deco !== "wind" && th.deco !== "forest" && th.deco !== "city") this.drawCastle(r);
+    if (th.deco === "river") this.drawCastle(r);
     this.drawDeco(c, r);
 
     c.save();
@@ -253,6 +275,7 @@ export class Game {
       r(e.x + 9 + ex, e.y + 10 + b, 2, 2, "#d22"); r(e.x + 18 + ex, e.y + 10 + b, 2, 2, "#d22");
       r(e.x + 8 + ex, e.y + 6 + b, 12, 2, "#222");
     }
+    this.boss?.render(c);
     // player — ninja catador de lixo
     const p = this.p;
     if (!(p.inv > 0 && Math.floor(this.t * 16) % 2)) {
@@ -302,7 +325,11 @@ export class Game {
     const off = this.camX * 0.5;
     for (let i = -1; i < 7; i++) {
       const x = i * 180 - (off % 180);
-      if (d === "wind") {
+      if (d === "factory") {
+        r(x + 10, 220, 150, 130, "#303d38"); r(x + 20, 120, 22, 130, "#252e2a"); r(x + 85, 155, 26, 100, "#252e2a");
+        for (let k = 0; k < 4; k++) { r(x + 16 + k * 34, 240, 18, 20, "#929348"); r(x + 8 + k * 10, 108 - k * 22 - (this.t * 12 % 22), 35 + k * 6, 18, "#5b6357"); }
+        if (i === 0 || i === 4) { c.font = "12px monospace"; c.fillStyle = "#e2e8d9"; c.fillText("ÁREA FECHADA", i === 0 ? 10 : 685, 180); }
+      } else if (d === "wind") {
         r(x + 60, 200, 6, 140, "#f0f0f0");
         c.save(); c.translate(x + 63, 200); c.rotate(this.t * 2 + i);
         for (let b = 0; b < 3; b++) { c.rotate((Math.PI * 2) / 3); c.fillStyle = "#ffffff"; c.fillRect(-3, 0, 6, 44); }
