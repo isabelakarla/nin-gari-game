@@ -1,5 +1,5 @@
 export type ItemKind = "bottle" | "can" | "bag" | "seedling" | "special";
-export type Deco = "river" | "wind" | "forest" | "city";
+export type Deco = "river" | "wind" | "forest" | "city" | "factory";
 
 export interface Theme {
   ods: number;
@@ -56,6 +56,15 @@ export const THEMES: Theme[] = [
     specialFact: "Telhados verdes reduzem a temperatura dos prédios, retêm água da chuva e criam abrigo para abelhas e pássaros no meio da cidade.",
     tip: "Use sacolas retornáveis e participe da coleta seletiva do seu bairro.", enemyName: "Sombra de Esgoto", story: "A última batalha! A Sombra de Esgoto domina a Cidade Verde, entupindo bueiros com sacolas plásticas. Os moradores se escondem em casa. Recolha as sacolas, mostre o poder da coleta seletiva e liberte a cidade!",
   },
+  {
+    ods: 13, odsName: "Ação Contra a Mudança Global do Clima", title: "A FONTE DA TOXICIDADE",
+    mission: "Derrote o Giga-Barril Tóxico · Bombas de Reciclagem", target: "can", targetLabel: "Acertos", targetCount: 10,
+    color: "#3F7E44", sky: ["#182a29", "#46504a"], hazard: "#335b31", dirt: "#454a48", grass: "#81926b", hill: "#293a34", deco: "factory",
+    missionFact: "Cada fração de grau de aquecimento importa. Reduzir rapidamente as emissões de gases de efeito estufa ajuda a limitar os riscos para as pessoas e os ecossistemas.",
+    specialFact: "A queima de carvão, petróleo e gás libera CO₂ e intensifica o efeito estufa. A mudança do clima causada pelas atividades humanas já afeta todas as regiões do planeta.",
+    tip: "Prefira caminhar, pedalar ou usar transporte coletivo e evite o desperdício de energia.", enemyName: "Giga-Barril Tóxico",
+    story: "Nin-Gari entra na guarida central da Corporação Poluidora. A fonte da contaminação é o Giga-Barril Tóxico, protegido por dois ninjas da poluição. Entre tiros e ondas de lama, o lendário reciclador precisa purificar o barril e devolver o futuro ao planeta!",
+  },
 ];
 
 export interface Rect { x: number; y: number; w: number; h: number }
@@ -78,7 +87,17 @@ function rng(seed: number) {
 }
 
 export function buildLevel(i: number): LevelData {
-  const theme = THEMES[i]!;
+  const theme = THEMES[i];
+  if (!theme) throw new RangeError("Fase inválida");
+  if (theme.deco === "factory") return {
+    width: 800,
+    platforms: [
+      { x: 0, y: GY, w: 800, h: 64, ground: true },
+      { x: 130, y: 280, w: 140, h: 16, ground: false },
+      { x: 355, y: 230, w: 90, h: 16, ground: false },
+      { x: 530, y: 280, w: 140, h: 16, ground: false },
+    ], items: [], enemies: [], portal: { x: -100, y: GY - 72 },
+  };
   const r = rng(1234 + i * 777);
   const others: ItemKind[] = (["bottle", "can", "bag"] as ItemKind[]).filter((k) => k !== theme.target);
   const platforms: LevelData["platforms"] = [];
