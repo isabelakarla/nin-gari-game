@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#e8f5e9">
+    <meta
+      name="description"
+      content="Ajude Nin-Gari a limpar o planeta em missões educativas pelas ODS."
+    >
+    <title>Nin-Gari: A Lenda do Reciclador</title>
+    <link rel="icon" href="./public/favicon.ico">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <span class="logo-block" aria-hidden="true"></span>
+        <div>
+          <h1>Nin-Gari: A Lenda do Reciclador</h1>
+        </div>
+      </header>
+
+      <section class="game-shell" aria-label="Jogo Nin-Gari">
+        <div class="hud-bar" aria-label="Placar">
+          <div class="hud-stat">
+            <span class="hud-label">Pontos</span>
+            <span class="hud-value" id="score">0</span>
+          </div>
+          <div class="hud-stat">
+            <span class="hud-label">Lixo</span>
+            <span class="hud-value" id="trash">0</span>
+          </div>
+          <div class="hud-stat">
+            <span class="hud-label">Fase</span>
+            <span class="hud-value" id="level">- / 5</span>
+          </div>
+          <div class="ods-stat">
+            <span class="ods-badge ods-badge-small" id="ods-badge" aria-hidden="true"></span>
+            <span class="ods-label" id="ods-label"></span>
+          </div>
+          <div class="lives" id="lives" aria-label="5 vidas"></div>
+          <div class="hud-actions">
+            <button class="btn-pixel btn-pixel-sm" id="pause-button" type="button" aria-label="Pausar jogo" disabled>❚❚</button>
+            <button class="btn-pixel btn-pixel-sm" id="sound-button" type="button" aria-label="Silenciar som">🔊</button>
+          </div>
+        </div>
+
+        <div class="mission-bar" id="mission-bar" hidden>
+          <span class="mission-label">MISSÃO</span>
+          <span class="mission-text" id="mission-text"></span>
+          <span class="mission-progress" id="mission-progress"></span>
+        </div>
+
+        <div class="boss-bar" id="boss-bar" hidden>
+          <div class="boss-health-wrap">
+            <div class="boss-health-label">
+              <span id="boss-name">Giga-Barril Tóxico</span>
+              <span id="boss-health-label">10/10</span>
+            </div>
+            <progress class="boss-health" id="boss-health" max="10" value="10" aria-label="Vida do Giga-Barril Tóxico"></progress>
+          </div>
+          <button class="btn-pixel btn-pixel-sm" id="shoot-button" type="button" aria-label="Atirar com X" hidden>🔫</button>
+          <button class="btn-pixel btn-pixel-sm throw-button" id="throw-button" type="button" aria-label="Lançar bomba" hidden>💣 <span id="bomb-count">0</span></button>
+        </div>
+
+        <div class="game-frame" id="game-frame">
+          <canvas
+            id="game-canvas"
+            width="800"
+            height="450"
+            aria-label="Nin-Gari percorre as fases. Use as setas ou A e D para se mover, Espaço para pular e X para atirar nos monstros."
+          ></canvas>
+          <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true" hidden></div>
+        </div>
+
+        <nav class="touch-controls" id="touch-controls" aria-label="Controles do jogo" hidden>
+          <div class="direction-controls">
+            <button class="btn-pixel touch-btn" type="button" data-control="left" aria-label="Mover para a esquerda">◀</button>
+            <button class="btn-pixel touch-btn" type="button" data-control="right" aria-label="Mover para a direita">▶</button>
+          </div>
+          <button class="btn-pixel touch-btn touch-btn-jump" type="button" data-control="jump" aria-label="Pular">▲</button>
+        </nav>
+      </section>
+
+      <p class="page-footer">
+        Feito por estudantes do EREM Rosa de Magalhães Melo: Matheus Montarroyos, Carlos Henrique e Hebert Rhyan.
+      </p>
+    </main>
+  </body>
+</html>

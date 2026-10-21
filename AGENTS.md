@@ -9,5 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep canvas physics and level progression in the game engine, with the final arena combat isolated in BossBattle; this keeps combat rules independently testable without React or animation timers.
-- Use the existing pixel-button appearance through a shared React control; preserve the retro design while keeping interaction markup consistent.
+- Keep canvas physics and level progression in the JavaScript game engine, with the final arena combat isolated in BossBattle; this keeps combat rules independently testable without a UI framework or animation timers.
+- Use the shared `btn-pixel` CSS class for pixel-button styling; preserve the retro design while keeping native HTML interaction markup consistent.

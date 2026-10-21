@@ -1,0 +1,111 @@
+export const THEMES = [
+    {
+        ods: 14, odsName: "Vida na Água", title: "Rio Limpo",
+        mission: "Colete 5 garrafas plásticas para limpar o rio", target: "bottle", targetLabel: "Garrafas", targetCount: 5,
+        color: "#0A97D9", sky: ["#5ec8f2", "#d9f3ff"], hazard: "#3f7a6a", dirt: "#8b5a2b", grass: "#3fbf4f", hill: "#7cc8a8", deco: "river",
+        missionFact: "Cerca de 11 milhões de toneladas de plástico chegam aos oceanos todo ano. Uma garrafa plástica pode levar até 450 anos para se decompor!",
+        specialFact: "Os oceanos produzem mais da metade do oxigênio que respiramos, graças ao fitoplâncton. Protegê-los é proteger a vida!",
+        tip: "Reduza o uso de descartáveis e leve sua garrafinha reutilizável.", enemyName: "Sufocador de Plástico", story: "O velho mestre do templo contou a Nin-Gari que o Rio Limpo, que abastecia o castelo do reino, foi tomado por garrafas plásticas. Os peixes sumiram e o Sufocador de Plástico cresce a cada lixo jogado na água. Recolha as garrafas e devolva a vida ao rio!",
+    },
+    {
+        ods: 7, odsName: "Energia Limpa", title: "Vale dos Ventos",
+        mission: "Recicle 6 latinhas para gerar energia limpa", target: "can", targetLabel: "Latinhas", targetCount: 6,
+        color: "#FCC30B", sky: ["#ffd76a", "#fff6d8"], hazard: "#5a4a3a", dirt: "#9a6a3a", grass: "#8cc63f", hill: "#c8d96a", deco: "wind",
+        missionFact: "Reciclar uma latinha de alumínio economiza energia suficiente para manter uma TV ligada por 3 horas. O Brasil recicla quase 100% das latinhas!",
+        specialFact: "Energia solar e eólica já são as fontes de eletricidade mais baratas em grande parte do mundo. O sol entrega à Terra em 1 hora a energia que a humanidade usa em 1 ano!",
+        tip: "Desligue aparelhos da tomada e separe as latinhas para reciclagem.", enemyName: "Nuvem de Fuligem", story: "Com o rio limpo, Nin-Gari chega ao Vale dos Ventos. As turbinas pararam e os painéis solares estão cobertos de fuligem: a Nuvem de Fuligem quer que o vale volte a queimar carvão. Recicle as latinhas e faça a energia limpa girar outra vez!",
+    },
+    {
+        ods: 15, odsName: "Vida Terrestre", title: "Floresta Viva",
+        mission: "Plante 6 mudas para reflorestar a mata", target: "seedling", targetLabel: "Mudas", targetCount: 6,
+        color: "#56C02B", sky: ["#8fd9a8", "#e8fbe9"], hazard: "#6b3b2a", dirt: "#6e4424", grass: "#2e9e3e", hill: "#4fae6a", deco: "forest",
+        missionFact: "Uma única árvore adulta pode absorver cerca de 22 kg de CO₂ por ano. Florestas abrigam 80% das espécies terrestres do planeta!",
+        specialFact: "A Mata Atlântica já perdeu cerca de 88% da sua área original. Projetos de reflorestamento ajudam a reconectar habitats de animais.",
+        tip: "Plante uma árvore e prefira produtos com certificação florestal.", enemyName: "Toxina de Solo", story: "A Floresta Viva está ficando cinza. A Toxina de Solo envenenou a terra e as árvores começaram a cair. Os animais pediram ajuda ao ninja: plante as mudas para que a mata volte a crescer!",
+    },
+    {
+        ods: 11, odsName: "Cidades Sustentáveis", title: "Cidade Verde",
+        mission: "Recolha 7 sacolas plásticas das ruas", target: "bag", targetLabel: "Sacolas", targetCount: 7,
+        color: "#FD9D24", sky: ["#ffb877", "#ffeedd"], hazard: "#55505a", dirt: "#6a6a72", grass: "#5cb85c", hill: "#b3a3c3", deco: "city",
+        missionFact: "Mais da metade da população mundial vive em cidades. Coleta seletiva, transporte público e áreas verdes tornam as cidades mais saudáveis!",
+        specialFact: "Telhados verdes reduzem a temperatura dos prédios, retêm água da chuva e criam abrigo para abelhas e pássaros no meio da cidade.",
+        tip: "Use sacolas retornáveis e participe da coleta seletiva do seu bairro.", enemyName: "Sombra de Esgoto", story: "A última batalha! A Sombra de Esgoto domina a Cidade Verde, entupindo bueiros com sacolas plásticas. Os moradores se escondem em casa. Recolha as sacolas, mostre o poder da coleta seletiva e liberte a cidade!",
+    },
+    {
+        ods: 13, odsName: "Ação Contra a Mudança Global do Clima", title: "A FONTE DA TOXICIDADE",
+        mission: "Derrote o Giga-Barril Tóxico · Bombas de Reciclagem", target: "can", targetLabel: "Acertos", targetCount: 10,
+        color: "#3F7E44", sky: ["#182a29", "#46504a"], hazard: "#335b31", dirt: "#454a48", grass: "#81926b", hill: "#293a34", deco: "factory",
+        missionFact: "Cada fração de grau de aquecimento importa. Reduzir rapidamente as emissões de gases de efeito estufa ajuda a limitar os riscos para as pessoas e os ecossistemas.",
+        specialFact: "A queima de carvão, petróleo e gás libera CO₂ e intensifica o efeito estufa. A mudança do clima causada pelas atividades humanas já afeta todas as regiões do planeta.",
+        tip: "Prefira caminhar, pedalar ou usar transporte coletivo e evite o desperdício de energia.", enemyName: "Giga-Barril Tóxico",
+        story: "Nin-Gari entra na guarida central da Corporação Poluidora. A fonte da contaminação é o Giga-Barril Tóxico, protegido por dois ninjas da poluição. Entre tiros e ondas de lama, o lendário reciclador precisa purificar o barril e devolver o futuro ao planeta!",
+    },
+];
+export const GY = 386;
+function rng(seed) {
+    let s = seed;
+    return () => {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+    };
+}
+export function buildLevel(i) {
+    const theme = THEMES[i];
+    if (!theme)
+        throw new RangeError("Fase inválida");
+    if (theme.deco === "factory")
+        return {
+            width: 800,
+            platforms: [
+                { x: 0, y: GY, w: 800, h: 64, ground: true },
+                { x: 130, y: 280, w: 140, h: 16, ground: false },
+                { x: 355, y: 230, w: 90, h: 16, ground: false },
+                { x: 530, y: 280, w: 140, h: 16, ground: false },
+            ], items: [], enemies: [], portal: { x: -100, y: GY - 72 },
+        };
+    const r = rng(1234 + i * 777);
+    const others = ["bottle", "can", "bag"].filter((k) => k !== theme.target);
+    const platforms = [];
+    const items = [];
+    const enemies = [];
+    const segs = 6 + i;
+    let x = 0;
+    let specialPlaced = false;
+    for (let s = 0; s < segs; s++) {
+        const w = s === 0 ? 600 : 380 + Math.floor(r() * 300);
+        platforms.push({ x, y: GY, w, h: 64, ground: true });
+        if (s > 0) {
+            // floating platforms
+            const px = x + 60 + Math.floor(r() * (w - 220));
+            const pw = 96 + Math.floor(r() * 3) * 32;
+            platforms.push({ x: px, y: 290, w: pw, h: 16, ground: false });
+            items.push({ x: px + pw / 2 - 8, y: 290 - 30, kind: theme.target });
+            if (r() > 0.4) {
+                const hx = px + pw - 20 + Math.floor(r() * 60);
+                platforms.push({ x: hx, y: 200, w: 96, h: 16, ground: false });
+                if (!specialPlaced && s >= 2) {
+                    items.push({ x: hx + 40, y: 168, kind: "special" });
+                    specialPlaced = true;
+                }
+                else
+                    items.push({ x: hx + 40, y: 170, kind: others[Math.floor(r() * others.length)] ?? "bottle" });
+            }
+            items.push({ x: x + 40 + Math.floor(r() * (w - 80)), y: GY - 28, kind: r() > 0.35 ? theme.target : (others[Math.floor(r() * others.length)] ?? "bottle") });
+            if (s < segs - 1 && w > 420)
+                enemies.push({ x: x + w / 2, minX: x + 40, maxX: x + w - 70 });
+            if (i >= 2 && s % 3 === 0 && w > 500)
+                enemies.push({ x: x + 80, minX: x + 40, maxX: x + w / 2 });
+        }
+        else {
+            items.push({ x: 380, y: GY - 28, kind: theme.target });
+        }
+        x += w;
+        if (s < segs - 1)
+            x += 80 + Math.floor(r() * 50);
+    }
+    if (!specialPlaced) {
+        platforms.push({ x: x - 360, y: 220, w: 96, h: 16, ground: false });
+        items.push({ x: x - 320, y: 188, kind: "special" });
+    }
+    return { width: x, platforms, items, enemies, portal: { x: x - 110, y: GY - 72 } };
+}
