@@ -19,7 +19,7 @@ describe("Regras da arena final", () => {
     assert.equal(THEMES[4].ods, 13);
   });
 
-  it("começa cada partida com cinco vidas e cinco corações no HUD", () => {
+  it("começa cada partida com sete vidas e sete corações no HUD", () => {
     const hudUpdates = [];
     const game = new Game({
       onHud(hud) {
@@ -28,7 +28,7 @@ describe("Regras da arena final", () => {
       onFact() {},
       onEnd() {},
     });
-    assert.equal(MAX_LIVES, 5);
+    assert.equal(MAX_LIVES, 7);
     assert.equal(game.lives, MAX_LIVES);
     assert.equal(hudUpdates[0]?.lives, MAX_LIVES);
   });
@@ -220,7 +220,7 @@ describe("Regras da arena final", () => {
     assert.equal(endings.length, 0);
     battle.update(2, player(), false);
     assert.deepEqual(endings, [
-      { score: 2484, trash: 0, seedlings: 0, enemies: 1, level: 5, win: true },
+      { score: 2584, trash: 0, seedlings: 0, enemies: 1, level: 5, win: true },
     ]);
     battle.update(2, player(), false);
     assert.equal(endings.length, 1);

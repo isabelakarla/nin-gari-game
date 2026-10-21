@@ -3,7 +3,7 @@ import { BOSS_HITS, BossBattle, LEVEL_BOSS_HITS, LevelBoss } from "./boss.js";
 import { buildLevel, GY, THEMES } from "./levels.js";
 export const VW = 800;
 export const VH = 450;
-export const MAX_LIVES = 5;
+export const MAX_LIVES = 7;
 const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 export class Game {
     cb;
