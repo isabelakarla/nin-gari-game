@@ -20,7 +20,6 @@ feito com HTML, CSS e JavaScript nativos.
 - [Fases e objetivos](#-fases-e-objetivos)
 - [Controles](#-controles)
 - [Como executar](#-como-executar)
-- [Publicar no GitHub Pages](#-publicar-no-github-pages)
 - [Testes e verificações](#-testes-e-verificações)
 - [Estrutura do projeto](#-estrutura-do-projeto)
 
@@ -110,27 +109,6 @@ PORT=3000 npm start
 ```
 
 Depois, acesse `http://127.0.0.1:3000`.
-
-## 🌐 Publicar no GitHub Pages
-
-O jogo é estático e pode ser publicado diretamente pelo GitHub Actions, sem
-build ou instalação de dependências.
-
-O código deste projeto está em
-[github.com/isabelakarla/nin-gari-game](https://github.com/isabelakarla/nin-gari-game)
-e o endereço do jogo é
-[isabelakarla.github.io/nin-gari-game](https://isabelakarla.github.io/nin-gari-game/).
-
-1. Envie o workflow e os arquivos do jogo para a branch `main` do repositório
-   `isabelakarla/nin-gari-game`.
-2. Nesse repositório, abra **Settings → Pages**.
-3. Em **Build and deployment → Source**, selecione **GitHub Actions**.
-4. Abra a aba **Actions** e aguarde a conclusão do workflow **Deploy to GitHub Pages**.
-5. Quando a publicação terminar, acesse:
-   [https://isabelakarla.github.io/nin-gari-game/](https://isabelakarla.github.io/nin-gari-game/).
-
-O workflow publica automaticamente uma nova versão a cada envio para `main`.
-Também é possível iniciar uma publicação manual pela aba **Actions**.
 
 ## ✅ Testes e verificações
 
